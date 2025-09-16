@@ -2,8 +2,18 @@
  * Wrapper classes for Jira entities (Project and Issue)
  */
 public class JiraWrapper {
-	private static final String LEAD_ACCOUNT_ID = '1337:0123456789-bfa0-40f4-bd28-25ae65c3e5b1';
+	private static final String LEAD_ACCOUNT_ID = '6290d5b1d5ec4f0069ea4615';
 	private static final String PROJECT_TEMPLATE_KEY = 'com.pyxis.greenhopper.jira:basic-software-development-template';
+	private static final String ASSIGNEE_TYPE = 'PROJECT_LEAD';
+	private static final Integer AVATAR_ID = 10200;
+	private static final Integer CATEGORY_ID = 10000;
+	private static final Integer ISSUE_SECURITY_SCHEME = 10034;
+	private static final Integer NOTIFICATION_SCHEME = 10000;
+	private static final Integer PERMISSION_SCHEME = 0;
+	private static final String PROJECT_TYPE_KEY = 'business';
+	private static final String URL = 'http://atlassian.com';
+	public String id { get; set; }
+	public String key { get; set; }
 
 	/**
 	 * Wrapper for Jira Project
@@ -14,6 +24,14 @@ public class JiraWrapper {
 		public String description;
 		public String leadAccountId;
 		public String projectTemplateKey;
+		public String assigneeType;
+		public Integer avatarId;
+		public Integer categoryId;
+		public Integer issueSecurityScheme;
+		public Integer notificationScheme;
+		public Integer permissionScheme;
+		public String projectTypeKey;
+		public String url;
 
 		/**
 		 * Constructor for ProjectWrapper
@@ -24,6 +42,14 @@ public class JiraWrapper {
 			this.description = description;
 			this.leadAccountId = LEAD_ACCOUNT_ID;
 			this.projectTemplateKey = PROJECT_TEMPLATE_KEY;
+			this.assigneeType = ASSIGNEE_TYPE;
+			this.avatarId = AVATAR_ID;
+			this.categoryId = CATEGORY_ID;
+			this.issueSecurityScheme = ISSUE_SECURITY_SCHEME;
+			this.notificationScheme = NOTIFICATION_SCHEME;
+			this.permissionScheme = PERMISSION_SCHEME;
+			this.projectTypeKey = PROJECT_TYPE_KEY;
+			this.url = URL;
 		}
 	}
 
@@ -66,7 +92,19 @@ public class JiraWrapper {
 		 */
 		public Map<String, Object> generateIssuePayloadMap() {
 			// Your implementation goes here
-			return null;
+			Map<String, Object> issueMap = new Map<String, Object>();
+			Map<String, Object> assigneeMap = new Map<String, Object>();
+			Map<String, Object> issueTypeMap = new Map<String, Object>();
+			Map<String, Object> projectMap = new Map<String, Object>();
+			assigneeMap.put('id', LEAD_ACCOUNT_ID);
+			issueMap.put('assignee', assigneeMap);
+			issueMap.put('description', formatDescription(description));
+			issueTypeMap.put('name', issueType);
+			issueMap.put('issuetype', issueTypeMap);
+			projectMap.put('key', projectKey);
+			issueMap.put('project', projectMap);
+			issueMap.put('summary', summary);
+			return issueMap;
 		}
 
 		/**
@@ -98,7 +136,17 @@ public class JiraWrapper {
 		 */
 		private Map<String, Object> formatDescription(String descText) {
 			// Your implementation goes here
-			return null;
+			Map<String, Object> descriptionMap = new Map<String, Object>();
+			Map<String, Object> contentMap = new Map<String, Object>();
+			Map<String, Object> subContentMap = new Map<String, Object>();
+			descriptionMap.put('type', 'doc');
+			descriptionMap.put('version', 1);
+			contentMap.put('type', 'paragraph');
+			subContentMap.put('text', descText);
+			subContentMap.put('type', 'text');
+			contentMap.put('content', subContentMap);
+			descriptionMap.put('content', contentMap);
+			return descriptionMap;
 		}
 	}
 }

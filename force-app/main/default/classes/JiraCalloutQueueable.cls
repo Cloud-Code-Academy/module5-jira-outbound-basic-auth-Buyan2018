@@ -64,6 +64,14 @@ public class JiraCalloutQueueable implements Queueable, Database.AllowsCallouts 
 	 */
 	public void execute(QueueableContext context) {
 		// Your implementation goes here
+		if (calloutType == TYPE_PROJECT) {
+			String jiraProjectId = JiraAPIService.createProject(projectWrapper);
+			updateJiraProject(jiraProjectId);
+
+		} else if (calloutType == TYPE_ISSUE) {
+			String jiraIssueKey = JiraAPIService.createIssue(issueWrapper);
+			updateJiraIssue(jiraIssueKey);
+		}
 	}
 
 	/**
@@ -74,6 +82,10 @@ public class JiraCalloutQueueable implements Queueable, Database.AllowsCallouts 
 	 */
 	private void updateJiraProject(String jiraProjectId) {
 		// Your implementation goes here
+		Jira_Project__c projectForUpd = new Jira_Project__c();
+		projectForUpd.Id = recordId;
+		projectForUpd.Project_ID__c = jiraProjectId;
+		update projectForUpd;
 	}
 
 	/**
@@ -85,5 +97,9 @@ public class JiraCalloutQueueable implements Queueable, Database.AllowsCallouts 
 	 */
 	private void updateJiraIssue(String jiraIssueKey) {
 		// Your implementation goes here
+		Jira_Issue__c issueForUpd = new Jira_Issue__c();
+		issueForUpd.Id = recordId;
+		issueForUpd.Issue_Key__c = jiraIssueKey;
+		update issueForUpd;
 	}
 }
